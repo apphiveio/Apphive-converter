@@ -1,0 +1,6 @@
+build:
+  languages:
+    - nodejs
+
+run:
+  web: node index.js
