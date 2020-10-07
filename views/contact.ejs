@@ -1,0 +1,39 @@
+<!-- views/contact.ejs -->
+<div class="form-header">
+    <h2>Apphive Converter</h2>
+  </div>
+  <form name ="form1" method="post" onSubmit="actionOnSubmit()" enctype="multipart/form-data">
+    <div class="form-field">
+      <select id="formchoice" name="formchoice">
+
+        <option value="/json-xlsx">Apphive JSON to Excel</option>
+        <option value="/xlsx-json">Excel to Apphive JSON</option>
+        <option value="/json-array">Apphive JSON to Algolia JSON</option>
+        <option value ="/cert">Play Store Cert to Huawai Cert</option>
+        
+        </select>
+    </div>
+    <div class="form-field">
+      <input type='file' id="fileUploaded" name='fileUploaded'>
+    </div>
+    <div class="form-actions">
+      <button class="btn" type="submit">Convert</button>
+    </div>
+  </form>
+
+  <script>
+
+    function actionOnSubmit()
+    {
+    
+    //Get the select select list and store in a variable
+    var e = document.getElementById("formchoice");
+    
+    //Get the selected value of the select list
+    var formaction = e.options[e.selectedIndex].value;
+    
+    //Update the form action
+    document.form1.action = formaction;
+    
+    }
+    </script>
