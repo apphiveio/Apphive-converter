@@ -30,6 +30,6 @@ app.use((err, req, res, next) => {
   res.status(500).send('Something broke!');
 });
 
-app.listen(433, () => {
+app.listen(80, () => {
   console.log('App running at http://localhost:3000');
 });
