@@ -13,41 +13,55 @@ router.get('/', (req, res) => {
   });
 
   router.post('/json-xlsx', (req, res) => {
+    const chunks = []
 
     req.pipe(req.busboy);
     req.busboy.on('file', function (fieldname, file, filename) {
         file.on("data", async(data) => {
-            var json = JSON.parse(data.toString())
-
-            var content = []
-            var columns = {}
-
-            var row = await rowFunction(content,json,columns,'')
-            content = row[0]
-            columns = Object.values(row[1])
-              
-              var settings = {
-                sheetName: 'Data',
-                extraLength: 3
-              }
-              
-              res.set({
-                'Content-Disposition': 'attachment; filename='+filename+'.xlsx'
-              });
-              
-            res.send(xlsx(columns, content, settings, false));
-            // res.send(row[0]);
+            chunks.push(data)
         });
+
+        file.on("end", async() => {
+          const data = Buffer.concat(chunks)
+          var json = JSON.parse(data.toString())
+
+          var content = []
+          var columns = {}
+
+          var row = await rowFunction(content,json,columns,'')
+          content = row[0]
+          columns = Object.values(row[1])
+            
+            var settings = {
+              sheetName: 'Data',
+              extraLength: 3
+            }
+            
+            res.set({
+              'Content-Disposition': 'attachment; filename='+filename+'.xlsx'
+            });
+            
+          res.send(xlsx(columns, content, settings, false));
+          // res.send(row[0]);
+
+        });
+
+
     });
 
 
   });
 
   router.post('/json-array', (req, res) => {
+    const chunks = []
 
     req.pipe(req.busboy);
     req.busboy.on('file', function (fieldname, file, filename) {
-        file.on("data", async(data) => {
+      file.on("data", async(data) => {
+        chunks.push(data)
+        });
+        file.on("end", async() => {
+            const data = Buffer.concat(chunks)
             var json = JSON.parse(data.toString())
 
             var content = []
@@ -59,7 +73,7 @@ router.get('/', (req, res) => {
             }
               
               res.set({
-                'Content-Disposition': 'attachment; filename='+filename+'.xlsx'
+                'Content-Disposition': 'attachment; filename='+filename+'.json'
               });
               
 
