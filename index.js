@@ -15,6 +15,8 @@ const middlewares = [
   layout(),
   express.static(path.join(__dirname, 'public')),
   bodyParser.urlencoded({ extended: true }),
+  timeout(15000),
+  haltOnTimedout,
 ];
 app.use(middlewares);
 
@@ -32,8 +34,7 @@ app.use((err, req, res, next) => {
   res.status(500).send('Something broke!');
 });
 
-app.use(timeout(15000));
-app.use(haltOnTimedout);
+
 
 function haltOnTimedout(req, res, next){
   if (!req.timedout) next();
