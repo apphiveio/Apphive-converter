@@ -32,7 +32,7 @@ app.use((err, req, res, next) => {
   res.status(500).send('Something broke!');
 });
 
-app.use(timeout(120000));
+app.use(timeout(15000));
 app.use(haltOnTimedout);
 
 function haltOnTimedout(req, res, next){
