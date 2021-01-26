@@ -3,6 +3,7 @@ const express = require('express');
 var busboy = require('connect-busboy');
 const layout = require('express-layout');
 const bodyParser = require('body-parser');
+const timeout = require('connect-timeout')
 
 const routes = require('./routes');
 const app = express();
@@ -20,6 +21,8 @@ app.use(middlewares);
 app.use(busboy());
 
 app.use('/', routes);
+
+app.use(timeout('15s'))
 
 app.use((req, res, next) => {
   res.status(404).send("Sorry can't find that!");
