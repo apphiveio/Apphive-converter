@@ -3,7 +3,6 @@ const express = require('express');
 var busboy = require('connect-busboy');
 const layout = require('express-layout');
 const bodyParser = require('body-parser');
-const timeout = require('connect-timeout')
 
 const routes = require('./routes');
 const app = express();
@@ -15,8 +14,6 @@ const middlewares = [
   layout(),
   express.static(path.join(__dirname, 'public')),
   bodyParser.urlencoded({ extended: true }),
-  timeout(15000),
-  haltOnTimedout,
 ];
 app.use(middlewares);
 
@@ -33,12 +30,6 @@ app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).send('Something broke!');
 });
-
-
-
-function haltOnTimedout(req, res, next){
-  if (!req.timedout) next();
-}
 
 const PORT = process.env.PORT || 3000;
 const server = app.listen(PORT, err => {
